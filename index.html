@@ -231,46 +231,7 @@
             margin-top: 15px;
         }
 
-        /* Thank You Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease forwards;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px 30px;
-            max-width: 400px;
-            text-align: center;
-            animation: scaleIn 0.3s ease forwards;
-        }
-
-        .modal-content h3 {
-            font-size: 1.8rem;
-            color: #0078C9;
-            margin-bottom: 15px;
-        }
-
-        .modal-content p {
-            color: #666;
-            font-size: 1rem;
-            margin-bottom: 25px;
-        }
+        /* Thank You Modal (Eliminado) */
 
         .language-switcher {
             text-align: center;
@@ -329,7 +290,7 @@
     <div class="container">
         <section class="hero">
             <h1 data-key="heroTitle">Compra sin sustos.</h1>
-            <p data-key="heroSubtitle">Te avisamos si un producto no va con tus alergias o tus objetivos de salud, y te mostramos alternativas seguras.</p>
+            <p data-key="heroSubtitle">Compra con confianza. Te ayudamos a seleccionar solo los productos <strong>que se alinean</strong> con tus alergias y objetivos de salud, y te guiamos hacia alternativas ideales.</p>
             <button class="btn btn-primary" onclick="startJourney()" data-key="heroButton">Probar ahora</button>
         </section>
 
@@ -387,22 +348,14 @@
         </footer>
     </div>
 
-    <div id="thankYouModal" class="modal">
-        <div class="modal-content">
-            <h3 data-key="modalTitle">¡Gracias! 🛒</h3>
-            <p data-key="modalText">Te avisaremos cuando esté disponible.</p>
-            <button class="btn btn-primary" onclick="closeModal()" data-key="modalButton">Cerrar</button>
-        </div>
-    </div>
-
     <script>
         // --- INICIO CÓDIGO DE TRADUCCIÓN ---
 
-        // 1. El Diccionario
+        // 1. El Diccionario (CON TEXTO DE MARKETING ACTUALIZADO v2)
         const translations = {
             'es': {
                 'heroTitle': 'Compra sin sustos.',
-                'heroSubtitle': 'Te avisamos si un producto no va con tus alergias o tus objetivos de salud, y te mostramos alternativas seguras.',
+                'heroSubtitle': 'Compra con confianza. Te ayudamos a seleccionar solo los productos <strong>que se alinean</strong> con tus alergias y objetivos de salud, y te guiamos hacia alternativas ideales.',
                 'heroButton': 'Probar ahora',
                 'step1Title': '¿Qué quieres evitar?',
                 'chipGluten': 'Gluten',
@@ -433,14 +386,12 @@
                 'emailButton': 'Quiero mi 10%',
                 'emailButtonSending': 'Enviando...',
                 'emailDisclaimer': 'Usaremos tus datos solo para avisarte de esta función.',
-                'footerText': 'Proyecto académico – no afiliado oficialmente',
-                'modalTitle': '¡Gracias! 🛒',
-                'modalText': 'Te avisaremos cuando esté disponible.',
-                'modalButton': 'Cerrar'
+                'footerText': 'Proyecto académico – no afiliado oficialmente'
+                // Los textos del modal ya no son necesarios aquí
             },
             'en': {
                 'heroTitle': 'Shop without fear.',
-                'heroSubtitle': 'We warn you if a product doesn\'t match your allergies or health goals, and we show you safe alternatives.',
+                'heroSubtitle': 'Shop with confidence. We help you select only the products <strong>that align</strong> with your allergies and health goals, and guide you to ideal alternatives.',
                 'heroButton': 'Try it now',
                 'step1Title': 'What do you want to avoid?',
                 'chipGluten': 'Gluten',
@@ -471,10 +422,7 @@
                 'emailButton': 'I want my 10%',
                 'emailButtonSending': 'Sending...',
                 'emailDisclaimer': 'We will only use your data to notify you about this feature.',
-                'footerText': 'Academic project – not officially affiliated',
-                'modalTitle': 'Thank you! 🛒',
-                'modalText': 'We\'ll let you know when it\'s available.',
-                'modalButton': 'Close'
+                'footerText': 'Academic project – not officially affiliated'
             }
         };
 
@@ -660,7 +608,7 @@
             }
         }
 
-        // --- Submit email (MODIFICADO para traducción) ---
+        // --- Submit email (MODIFICADO para REDIRIGIR) ---
         async function submitEmail() {
             const emailInput = document.getElementById('emailInput');
             const email = emailInput.value.trim();
@@ -672,27 +620,23 @@
             }
             emailInput.style.borderColor = '#ddd'; // Reset
 
-            // --- INICIO MODIFICACIÓN ---
             const currentLang = document.documentElement.lang || 'es';
             submitBtn.textContent = translations[currentLang].emailButtonSending;
-            // --- FIN MODIFICACIÓN ---
             
             submitBtn.disabled = true;
 
             localStorage.setItem('userEmail', email);
             
-            // Recolectar datos de los chips
             const avoid = JSON.parse(localStorage.getItem('avoidSelections') || '[]').join(', ');
             const priority = JSON.parse(localStorage.getItem('prioritySelections') || '[]').join(', ');
 
             await sendToGoogleForms(avoid, priority, email);
 
-            // --- INICIO MODIFICACIÓN ---
-            submitBtn.textContent = translations[currentLang].emailButton;
-            // --- FIN MODIFICACIÓN ---
+            // NO volvemos a habilitar el botón ni cambiamos el texto
+            // Simplemente redirigimos
             
-            submitBtn.disabled = false;
-            document.getElementById('thankYouModal').classList.add('active');
+            // ¡CAMBIO CLAVE! Redirige a la página de gracias
+            window.location.href = "gracias.html";
         }
 
         // Validate email
@@ -701,11 +645,8 @@
             return re.test(email);
         }
 
-        // Close modal
-        function closeModal() {
-            document.getElementById('thankYouModal').classList.remove('active');
-        }
-
+        // Close modal (Función ELIMINADA - ya no se usa)
+        
         // Smooth scroll to top
         function smoothScroll() {
             window.scrollTo({
