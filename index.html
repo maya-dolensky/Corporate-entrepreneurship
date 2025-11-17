@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personalized Shopping Assistant</title>
@@ -273,6 +272,26 @@
             margin-bottom: 25px;
         }
 
+        .language-switcher {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .lang-btn {
+            background: none;
+            border: 1px solid #0078C9;
+            color: #0078C9;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .lang-btn.active {
+            background: #0078C9;
+            color: white;
+        }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -309,70 +328,205 @@
 <body>
     <div class="container">
         <section class="hero">
-            <h1>Compra sin sustos.</h1>
-            <p>Te avisamos si un producto no va con tus alergias o tus objetivos de salud, y te mostramos alternativas seguras.</p>
-            <button class="btn btn-primary" onclick="startJourney()">Probar ahora</button>
+            <h1 data-key="heroTitle">Compra sin sustos.</h1>
+            <p data-key="heroSubtitle">Te avisamos si un producto no va con tus alergias o tus objetivos de salud, y te mostramos alternativas seguras.</p>
+            <button class="btn btn-primary" onclick="startJourney()" data-key="heroButton">Probar ahora</button>
         </section>
 
         <section id="step1" class="step">
-            <h2>¿Qué quieres evitar?</h2>
+            <h2 data-key="step1Title">¿Qué quieres evitar?</h2>
             <div class="chips-container">
-                <div class="chip" data-value="gluten">Gluten</div>
-                <div class="chip" data-value="lactosa">Lactosa</div>
-                <div class="chip" data-value="frutos-secos">Frutos secos</div>
-                <div class="chip" data-value="soja">Soja</div>
-                <div class="chip" data-value="mariscos">Mariscos</div>
-                <div class="chip" data-value="huevo">Huevo</div>
-                <div class="chip" data-value="azucares">Azúcares añadidos</div>
-                <div class="chip" data-value="ultraprocesados">Ultraprocesados</div>
-                <div class="chip" data-value="alcohol">Alcohol</div>
-                <input type="text" class="other-input" id="other-avoid" placeholder="Escribe otro que quieras evitar..." oninput="saveSelections()">
-                <div class="chip" data-value="otros">Otros</div>
+                <div class="chip" data-value="gluten" data-key="chipGluten">Gluten</div>
+                <div class="chip" data-value="lactosa" data-key="chipLactosa">Lactosa</div>
+                <div class="chip" data-value="frutos-secos" data-key="chipNuts">Frutos secos</div>
+                <div class="chip" data-value="soja" data-key="chipSoy">Soja</div>
+                <div class="chip" data-value="mariscos" data-key="chipShellfish">Mariscos</div>
+                <div class="chip" data-value="huevo" data-key="chipEgg">Huevo</div>
+                <div class="chip" data-value="azucares" data-key="chipSugar">Azúcares añadidos</div>
+                <div class="chip" data-value="ultraprocesados" data-key="chipUltraprocessed">Ultraprocesados</div>
+                <div class="chip" data-value="alcohol" data-key="chipAlcohol">Alcohol</div>
+                <input type="text" class="other-input" id="other-avoid" data-key-placeholder="placeholderAvoid" placeholder="Escribe otro que quieras evitar..." oninput="saveSelections()">
+                <div class="chip" data-value="otros" data-key="chipOther">Otros</div>
             </div>
-            <button class="btn btn-secondary" onclick="goToStep2()">Siguiente</button>
+            <button class="btn btn-secondary" onclick="goToStep2()" data-key="step1Button">Siguiente</button>
         </section>
 
         <section id="step2" class="step">
-            <h2>¿Qué te gustaría priorizar?</h2>
+            <h2 data-key="step2Title">¿Qué te gustaría priorizar?</h2>
             <div class="chips-container">
-                <div class="chip" data-value="proteinas">Más proteínas</div>
-                <div class="chip" data-value="fibra">Más fibra</div>
-                <div class="chip" data-value="bajo-sodio">Bajo en sodio</div>
-                <div class="chip" data-value="vegetariano">Vegetariano</div>
-                <div class="chip" data-value="vegano">Vegano</div>
-                <div class="chip" data-value="menos-azucares">Menos azúcares</div>
-                <div class="chip" data-value="menos-grasas">Menos grasas saturadas</div>
-                
-                <input type="text" class="other-input" id="other-priority" placeholder="Escribe otro que quieras priorizar..." oninput="saveSelections()">
-                <div class="chip" data-value="otros">Otros</div>
+                <div class="chip" data-value="proteinas" data-key="chipProtein">Más proteínas</div>
+                <div class="chip" data-value="fibra" data-key="chipFiber">Más fibra</div>
+                <div class="chip" data-value="bajo-sodio" data-key="chipLowSodium">Bajo en sodio</div>
+                <div class="chip" data-value="vegetariano" data-key="chipVegetarian">Vegetariano</div>
+                <div class="chip" data-value="vegano" data-key="chipVegan">Vegano</div>
+                <div class="chip" data-value="menos-azucares" data-key="chipLessSugar">Menos azúcares</div>
+                <div class="chip" data-value="menos-grasas" data-key="chipLessFat">Menos grasas saturadas</div>
+                <input type="text" class="other-input" id="other-priority" data-key-placeholder="placeholderPriority" placeholder="Escribe otro que quieras priorizar..." oninput="saveSelections()">
+                <div class="chip" data-value="otros" data-key="chipOther">Otros</div>
                 </div>
-            <button class="btn btn-secondary" onclick="goToEmailGate()">Ir al carrito</button>
+            <button class="btn btn-secondary" onclick="goToEmailGate()" data-key="step2Button">Ir al carrito</button>
         </section>
 
         <section id="emailGate" class="email-gate">
-            <h2>¡Casi listo! 🎉</h2>
-            <p>Estamos activando esta función. Déjanos tu email y te damos <strong>10% OFF</strong> en tu primera compra cuando esté disponible.</p>
+            <h2 data-key="emailTitle">¡Casi listo! 🎉</h2>
+            <p data-key="emailSubtitle">Estamos activando esta función. Déjanos tu email y te damos <strong>10% OFF</strong> en tu primera compra cuando esté disponible.</p>
             <div class="email-input-container">
-                <input type="email" class="email-input" id="emailInput" placeholder="tu@email.com" required>
+                <input type="email" class="email-input" id="emailInput" data-key-placeholder="placeholderEmail" placeholder="tu@email.com" required>
             </div>
-            <button class="btn btn-primary" id="submit-btn" onclick="submitEmail()">Quiero mi 10%</button>
-            <p class="disclaimer">Usaremos tus datos solo para avisarte de esta función.</p>
+            <button class="btn btn-primary" id="submit-btn" onclick="submitEmail()" data-key="emailButton">Quiero mi 10%</button>
+            <p class="disclaimer" data-key="emailDisclaimer">Usaremos tus datos solo para avisarte de esta función.</p>
         </section>
 
-        <footer class="footer">
-            Proyecto académico – no afiliado oficialmente a Carrefour.
+        <section class="language-switcher">
+            <button class="lang-btn" onclick="setLanguage('es')">Español</button>
+            <button class="lang-btn" onclick="setLanguage('en')">English</button>
+        </section>
+        
+        <footer class="footer" data-key="footerText">
+            Proyecto académico – no afiliado oficialmente
         </footer>
     </div>
 
     <div id="thankYouModal" class="modal">
         <div class="modal-content">
-            <h3>¡Gracias! 🛒</h3>
-            <p>Te avisaremos cuando esté disponible.</p>
-            <button class="btn btn-primary" onclick="closeModal()">Cerrar</button>
+            <h3 data-key="modalTitle">¡Gracias! 🛒</h3>
+            <p data-key="modalText">Te avisaremos cuando esté disponible.</p>
+            <button class="btn btn-primary" onclick="closeModal()" data-key="modalButton">Cerrar</button>
         </div>
     </div>
 
     <script>
+        // --- INICIO CÓDIGO DE TRADUCCIÓN ---
+
+        // 1. El Diccionario
+        const translations = {
+            'es': {
+                'heroTitle': 'Compra sin sustos.',
+                'heroSubtitle': 'Te avisamos si un producto no va con tus alergias o tus objetivos de salud, y te mostramos alternativas seguras.',
+                'heroButton': 'Probar ahora',
+                'step1Title': '¿Qué quieres evitar?',
+                'chipGluten': 'Gluten',
+                'chipLactosa': 'Lactosa',
+                'chipNuts': 'Frutos secos',
+                'chipSoy': 'Soja',
+                'chipShellfish': 'Mariscos',
+                'chipEgg': 'Huevo',
+                'chipSugar': 'Azúcares añadidos',
+                'chipUltraprocessed': 'Ultraprocesados',
+                'chipAlcohol': 'Alcohol',
+                'chipOther': 'Otros',
+                'placeholderAvoid': 'Escribe otro que quieras evitar...',
+                'step1Button': 'Siguiente',
+                'step2Title': '¿Qué te gustaría priorizar?',
+                'chipProtein': 'Más proteínas',
+                'chipFiber': 'Más fibra',
+                'chipLowSodium': 'Bajo en sodio',
+                'chipVegetarian': 'Vegetariano',
+                'chipVegan': 'Vegano',
+                'chipLessSugar': 'Menos azúcares',
+                'chipLessFat': 'Menos grasas saturadas',
+                'placeholderPriority': 'Escribe otro que quieras priorizar...',
+                'step2Button': 'Ir al carrito',
+                'emailTitle': '¡Casi listo! 🎉',
+                'emailSubtitle': 'Estamos activando esta función. Déjanos tu email y te damos <strong>10% OFF</strong> en tu primera compra cuando esté disponible.',
+                'placeholderEmail': 'tu@email.com',
+                'emailButton': 'Quiero mi 10%',
+                'emailButtonSending': 'Enviando...',
+                'emailDisclaimer': 'Usaremos tus datos solo para avisarte de esta función.',
+                'footerText': 'Proyecto académico – no afiliado oficialmente',
+                'modalTitle': '¡Gracias! 🛒',
+                'modalText': 'Te avisaremos cuando esté disponible.',
+                'modalButton': 'Cerrar'
+            },
+            'en': {
+                'heroTitle': 'Shop without fear.',
+                'heroSubtitle': 'We warn you if a product doesn\'t match your allergies or health goals, and we show you safe alternatives.',
+                'heroButton': 'Try it now',
+                'step1Title': 'What do you want to avoid?',
+                'chipGluten': 'Gluten',
+                'chipLactosa': 'Lactose',
+                'chipNuts': 'Nuts',
+                'chipSoy': 'Soy',
+                'chipShellfish': 'Shellfish',
+                'chipEgg': 'Egg',
+                'chipSugar': 'Added sugars',
+                'chipUltraprocessed': 'Ultra-processed',
+                'chipAlcohol': 'Alcohol',
+                'chipOther': 'Other',
+                'placeholderAvoid': 'Write another one you want to avoid...',
+                'step1Button': 'Next',
+                'step2Title': 'What would you like to prioritize?',
+                'chipProtein': 'More protein',
+                'chipFiber': 'More fiber',
+                'chipLowSodium': 'Low sodium',
+                'chipVegetarian': 'Vegetarian',
+                'chipVegan': 'Vegan',
+                'chipLessSugar': 'Less sugar',
+                'chipLessFat': 'Less saturated fat',
+                'placeholderPriority': 'Write another one you want to prioritize...',
+                'step2Button': 'Go to cart',
+                'emailTitle': 'Almost ready! 🎉',
+                'emailSubtitle': 'We\'re activating this feature. Leave us your email and we\'ll give you <strong>10% OFF</strong> your first purchase when it\'s available.',
+                'placeholderEmail': 'you@email.com',
+                'emailButton': 'I want my 10%',
+                'emailButtonSending': 'Sending...',
+                'emailDisclaimer': 'We will only use your data to notify you about this feature.',
+                'footerText': 'Academic project – not officially affiliated',
+                'modalTitle': 'Thank you! 🛒',
+                'modalText': 'We\'ll let you know when it\'s available.',
+                'modalButton': 'Close'
+            }
+        };
+
+        // 2. El Motor de Traducción
+        function setLanguage(lang) {
+            document.documentElement.lang = lang; // Pone 'es' o 'en' en la etiqueta <html>
+
+            // Cambia el texto de los elementos normales
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.dataset.key;
+                if (translations[lang] && translations[lang][key]) {
+                    // Usamos innerHTML para que respete etiquetas como <strong>
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Cambia el texto de los placeholders
+            document.querySelectorAll('[data-key-placeholder]').forEach(element => {
+                const key = element.dataset.keyPlaceholder;
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            // Actualiza el botón activo
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick') === `setLanguage('${lang}')`);
+            });
+            
+            localStorage.setItem('userLanguage', lang); // Guarda la preferencia
+        }
+
+        // 3. Detección Automática
+        function detectInitialLanguage() {
+            const savedLang = localStorage.getItem('userLanguage');
+            if (savedLang) {
+                setLanguage(savedLang);
+                return;
+            }
+            
+            const browserLang = navigator.language.split('-')[0]; // 'es-ES' -> 'es'
+            
+            if (browserLang === 'es') {
+                setLanguage('es');
+            } else {
+                setLanguage('en'); // Por defecto inglés
+            }
+        }
+        
+        // --- FIN CÓDIGO DE TRADUCCIÓN ---
+
+
         // Initialize chip selection
         document.querySelectorAll('.chip').forEach(chip => {
             chip.addEventListener('click', function() {
@@ -506,7 +660,7 @@
             }
         }
 
-        // --- Submit email ---
+        // --- Submit email (MODIFICADO para traducción) ---
         async function submitEmail() {
             const emailInput = document.getElementById('emailInput');
             const email = emailInput.value.trim();
@@ -518,7 +672,11 @@
             }
             emailInput.style.borderColor = '#ddd'; // Reset
 
-            submitBtn.textContent = 'Enviando...';
+            // --- INICIO MODIFICACIÓN ---
+            const currentLang = document.documentElement.lang || 'es';
+            submitBtn.textContent = translations[currentLang].emailButtonSending;
+            // --- FIN MODIFICACIÓN ---
+            
             submitBtn.disabled = true;
 
             localStorage.setItem('userEmail', email);
@@ -529,7 +687,10 @@
 
             await sendToGoogleForms(avoid, priority, email);
 
-            submitBtn.textContent = 'Quiero mi 10%';
+            // --- INICIO MODIFICACIÓN ---
+            submitBtn.textContent = translations[currentLang].emailButton;
+            // --- FIN MODIFICACIÓN ---
+            
             submitBtn.disabled = false;
             document.getElementById('thankYouModal').classList.add('active');
         }
@@ -553,8 +714,11 @@
             });
         }
 
-        // Load selections on page load
-        window.addEventListener('load', loadSelections);
+        // Load selections on page load (MODIFICADO para traducción)
+        window.addEventListener('load', () => {
+            loadSelections();
+            detectInitialLanguage(); // <-- AÑADIDO
+        });
     </script>
 </body>
 </html>
