@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Shopping Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0078C9;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Steps */
+        .step {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            display: none;
+            opacity: 0;
+        }
+
+        .step.active {
+            display: block;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .step h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0078C9;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Chips */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .chip {
+            padding: 12px 24px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            background: white;
+            color: #333;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .chip:hover {
+            border-color: #0078C9;
+            transform: translateY(-2px);
+        }
+
+        .chip.selected {
+            background: #0078C9;
+            color: white;
+            border-color: #0078C9;
+        }
+        
+        /* --- NUEVO CSS --- */
+        .other-input {
+            display: none;
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 15px;
+        }
+
+        .other-input.active {
+            display: block;
+            animation: fadeIn 0.3s ease forwards;
+        }
+        /* --- FIN NUEVO CSS --- */
+
+        /* Buttons */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #E41E26;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #c91920;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(228, 30, 38, 0.3);
+        }
+        
+        .btn-primary:disabled:hover {
+            background: #ccc;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: #0078C9;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #006bb3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 120, 201, 0.3);
+        }
+
+        /* Email Gate */
+        .email-gate {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            display: none;
+            opacity: 0;
+            text-align: center;
+        }
+
+        .email-gate.active {
+            display: block;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .email-gate h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0078C9;
+            margin-bottom: 20px;
+        }
+
+        .email-gate p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .email-input-container {
+            margin-bottom: 15px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #0078C9;
+        }
+
+        .disclaimer {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 15px;
+        }
+
+        /* Thank You Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            max-width: 400px;
+            text-align: center;
+            animation: scaleIn 0.3s ease forwards;
+        }
+
+        .modal-content h3 {
+            font-size: 1.8rem;
+            color: #0078C9;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); }
+            to { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .step h2, .email-gate h2 { font-size: 1.5rem; }
+            .chip { padding: 10px 18px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="hero">
+            <h1>Compra sin sustos.</h1>
+            <p>Te avisamos si un producto no va con tus alergias o tus objetivos de salud, y te mostramos alternativas seguras.</p>
+            <button class="btn btn-primary" onclick="startJourney()">Probar ahora</button>
+        </section>
+
+        <section id="step1" class="step">
+            <h2>¿Qué quieres evitar?</h2>
+            <div class="chips-container">
+                <div class="chip" data-value="gluten">Gluten</div>
+                <div class="chip" data-value="lactosa">Lactosa</div>
+                <div class="chip" data-value="frutos-secos">Frutos secos</div>
+                <div class="chip" data-value="soja">Soja</div>
+                <div class="chip" data-value="mariscos">Mariscos</div>
+                <div class="chip" data-value="huevo">Huevo</div>
+                <div class="chip" data-value="azucares">Azúcares añadidos</div>
+                <div class="chip" data-value="ultraprocesados">Ultraprocesados</div>
+                <div class="chip" data-value="alcohol">Alcohol</div>
+                <input type="text" class="other-input" id="other-avoid" placeholder="Escribe otro que quieras evitar..." oninput="saveSelections()">
+                <div class="chip" data-value="otros">Otros</div>
+            </div>
+            <button class="btn btn-secondary" onclick="goToStep2()">Siguiente</button>
+        </section>
+
+        <section id="step2" class="step">
+            <h2>¿Qué te gustaría priorizar?</h2>
+            <div class="chips-container">
+                <div class="chip" data-value="proteinas">Más proteínas</div>
+                <div class="chip" data-value="fibra">Más fibra</div>
+                <div class="chip" data-value="bajo-sodio">Bajo en sodio</div>
+                <div class="chip" data-value="vegetariano">Vegetariano</div>
+                <div class="chip" data-value="vegano">Vegano</div>
+                <div class="chip" data-value="menos-azucares">Menos azúcares</div>
+                <div class="chip" data-value="menos-grasas">Menos grasas saturadas</div>
+                
+                <input type="text" class="other-input" id="other-priority" placeholder="Escribe otro que quieras priorizar..." oninput="saveSelections()">
+                <div class="chip" data-value="otros">Otros</div>
+                </div>
+            <button class="btn btn-secondary" onclick="goToEmailGate()">Ir al carrito</button>
+        </section>
+
+        <section id="emailGate" class="email-gate">
+            <h2>¡Casi listo! 🎉</h2>
+            <p>Estamos activando esta función. Déjanos tu email y te damos <strong>10% OFF</strong> en tu primera compra cuando esté disponible.</p>
+            <div class="email-input-container">
+                <input type="email" class="email-input" id="emailInput" placeholder="tu@email.com" required>
+            </div>
+            <button class="btn btn-primary" id="submit-btn" onclick="submitEmail()">Quiero mi 10%</button>
+            <p class="disclaimer">Usaremos tus datos solo para avisarte de esta función.</p>
+        </section>
+
+        <footer class="footer">
+            Proyecto académico – no afiliado oficialmente a Carrefour.
+        </footer>
+    </div>
+
+    <div id="thankYouModal" class="modal">
+        <div class="modal-content">
+            <h3>¡Gracias! 🛒</h3>
+            <p>Te avisaremos cuando esté disponible.</p>
+            <button class="btn btn-primary" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize chip selection
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                
+                // --- LÓGICA SIMPLIFICADA para "Otros" ---
+                if (this.dataset.value === 'otros') {
+                    // Busca el input que está ANTES del chip "Otros"
+                    const otherInput = this.previousElementSibling; 
+                    
+                    if (otherInput && otherInput.classList.contains('other-input')) {
+                        otherInput.classList.toggle('active', this.classList.contains('selected'));
+                        if (!this.classList.contains('selected')) {
+                            otherInput.value = ''; // Limpiar si se deselecciona
+                        }
+                    }
+                }
+                // --- Fin modificado ---
+                
+                saveSelections();
+            });
+        });
+
+        // Save selections to localStorage
+        function saveSelections() {
+            const step1Selections = [];
+            document.querySelectorAll('#step1 .chip.selected').forEach(chip => {
+                step1Selections.push(chip.dataset.value);
+            });
+            // --- NUEVO: Guardar el valor de "Otros" de Step 1 ---
+            const otherAvoidInput = document.getElementById('other-avoid');
+            if (otherAvoidInput.classList.contains('active') && otherAvoidInput.value.trim() !== '') {
+                // Sobrescribe "otros" con el valor real
+                const index = step1Selections.indexOf('otros');
+                if (index > -1) step1Selections[index] = `Otros: ${otherAvoidInput.value.trim()}`;
+            }
+
+            const step2Selections = [];
+            document.querySelectorAll('#step2 .chip.selected').forEach(chip => {
+                step2Selections.push(chip.dataset.value);
+            });
+            // --- NUEVO: Guardar el valor de "Otros" de Step 2 ---
+            const otherPriorityInput = document.getElementById('other-priority');
+            if (otherPriorityInput.classList.contains('active') && otherPriorityInput.value.trim() !== '') {
+                const index = step2Selections.indexOf('otros');
+                if (index > -1) step2Selections[index] = `Otros: ${otherPriorityInput.value.trim()}`;
+            }
+
+            localStorage.setItem('avoidSelections', JSON.stringify(step1Selections));
+            localStorage.setItem('prioritySelections', JSON.stringify(step2Selections));
+        }
+
+        // Load selections from localStorage
+        function loadSelections() {
+            const step1Selections = JSON.parse(localStorage.getItem('avoidSelections') || '[]');
+            const otherAvoidInput = document.getElementById('other-avoid');
+            step1Selections.forEach(value => {
+                if (value.startsWith('Otros:')) {
+                    const chip = document.querySelector(`#step1 .chip[data-value="otros"]`);
+                    if (chip) chip.classList.add('selected');
+                    otherAvoidInput.value = value.replace('Otros: ', '');
+                    otherAvoidInput.classList.add('active');
+                } else {
+                    const chip = document.querySelector(`#step1 .chip[data-value="${value}"]`);
+                    if (chip) chip.classList.add('selected');
+                }
+            });
+
+            const step2Selections = JSON.parse(localStorage.getItem('prioritySelections') || '[]');
+            const otherPriorityInput = document.getElementById('other-priority');
+            step2Selections.forEach(value => {
+                if (value.startsWith('Otros:')) {
+                    const chip = document.querySelector(`#step2 .chip[data-value="otros"]`);
+                    if (chip) chip.classList.add('selected');
+                    otherPriorityInput.value = value.replace('Otros: ', '');
+                    otherPriorityInput.classList.add('active');
+                } else {
+                    const chip = document.querySelector(`#step2 .chip[data-value="${value}"]`);
+                    if (chip) chip.classList.add('selected');
+                }
+            });
+        }
+
+        // Start journey
+        function startJourney() {
+            document.querySelector('.hero').style.display = 'none';
+            document.getElementById('step1').classList.add('active');
+            smoothScroll();
+        }
+
+        // Go to step 2
+        function goToStep2() {
+            document.getElementById('step1').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('step2').classList.add('active');
+                smoothScroll();
+            }, 100);
+        }
+
+        // Go to email gate
+        function goToEmailGate() {
+            document.getElementById('step2').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('emailGate').classList.add('active');
+                smoothScroll();
+            }, 100);
+        }
+        
+        // --- Función para enviar a Google Forms ---
+        async function sendToGoogleForms(avoid, priority, email) {
+            
+            // ¡La URL aquí está corregida, sin el punto extra!
+            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSf6iQeJnVit60Ov8kdI3Cw-sA6gV707BP8pbhp-8HO3udIppQ/formResponse';
+            const AVOID_FIELD = 'entry.35208550';
+            const PRIORITY_FIELD = 'entry.1034597426';
+            const EMAIL_FIELD = 'entry.1471576131';
+
+            const formData = new FormData();
+            formData.append(AVOID_FIELD, avoid);
+            formData.append(PRIORITY_FIELD, priority);
+            formData.append(EMAIL_FIELD, email);
+
+            try {
+                await fetch(GOOGLE_FORM_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+            } catch (error) {
+                console.error('Error al enviar a Google Forms:', error);
+            }
+        }
+
+        // --- Submit email ---
+        async function submitEmail() {
+            const emailInput = document.getElementById('emailInput');
+            const email = emailInput.value.trim();
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (!email || !isValidEmail(email)) {
+                emailInput.style.borderColor = '#E41E26';
+                return;
+            }
+            emailInput.style.borderColor = '#ddd'; // Reset
+
+            submitBtn.textContent = 'Enviando...';
+            submitBtn.disabled = true;
+
+            localStorage.setItem('userEmail', email);
+            
+            // Recolectar datos de los chips
+            const avoid = JSON.parse(localStorage.getItem('avoidSelections') || '[]').join(', ');
+            const priority = JSON.parse(localStorage.getItem('prioritySelections') || '[]').join(', ');
+
+            await sendToGoogleForms(avoid, priority, email);
+
+            submitBtn.textContent = 'Quiero mi 10%';
+            submitBtn.disabled = false;
+            document.getElementById('thankYouModal').classList.add('active');
+        }
+
+        // Validate email
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('thankYouModal').classList.remove('active');
+        }
+
+        // Smooth scroll to top
+        function smoothScroll() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Load selections on page load
+        window.addEventListener('load', loadSelections);
+    </script>
+</body>
+</html>
